@@ -14,11 +14,11 @@
                     colors: {
                         background: "#ffffff",
                         primary: {
-                            DEFAULT: "#000000",
+                            DEFAULT: "#82046D",
                             foreground: "#FAFAFA"
                         },
                         muted: {
-                            foreground: "#75737A"
+                            foreground: "#333333"
                         }
                     }
                 }
@@ -36,37 +36,80 @@
 // https://v0.dev/t/Cp7OkohwaKW
 -->
         <div>
-            <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-sm" data-v0-t="card">
-                <div class="flex flex-col space-y-1.5 p-4">
-                    <h3 class="text-2xl font-semibold whitespace-nowrap leading-none tracking-tight">Upload a file</h3>
-                    <p class="text-sm text-muted-foreground">File should be in .pdf format</p>
-                </div>
-                <div class="p-4">
-                    <div class="flex items-center space-x-2">
-                        <label
-                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                            for="file">
-                            File
-                        </label>
-                        <input
-                            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            id="file" accept=".pdf" type="file" />
+            <div id="upload_file_ui">
+                <h3 class="text-xl font-bold lg:text-2xl max-w-sm">Chat With Your PDF. Get Summary and more</h3>
+                <p class="text-sm mt-4 max-w-md">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
+                    repellendus
+                    tempora nisi accusantium magni rerum harum explicabo! Ea, perspiciatis fugit.</p>
+                <div class="rounded-lg border mt-4 bg-card text-card-foreground shadow-sm w-full max-w-md"
+                    data-v0-t="card">
+                    <div class="flex flex-col space-y-1.5 p-4">
+                        <h3 class="text-2xl font-semibold whitespace-nowrap leading-none tracking-tight">Upload a file
+                        </h3>
+                        <p class="text-sm text-muted-foreground">File should be in .pdf format</p>
                     </div>
-                    <button onclick="uploadFile()"
-                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 mt-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="mr-2 h-4 w-4">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="17 8 12 3 7 8"></polyline>
-                            <line x1="12" x2="12" y1="3" y2="15"></line>
-                        </svg>
-                        Upload
-                    </button>
+                    <div class="p-4">
+                        <div class="flex items-center space-x-2">
+                            <label
+                                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                for="file">
+                                File
+                            </label>
+                            <input
+                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                id="file" accept=".pdf" type="file" required />
+                        </div>
+                        <button onclick="uploadFile()" id="upload_btn"
+                            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 mt-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="mr-2 h-4 w-4">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" x2="12" y1="3" y2="15"></line>
+                            </svg>
+                            Upload
+                        </button>
+                    </div>
                 </div>
             </div>
-            <span id="status_error" class="text-red-500 text-sm mt-4 font-medium block text-center"></span>
-            <span id="status_success" class="text-green-500 text-sm mt-4 font-medium block text-center"></span>
+            <div id="chat_ui" class="hidden items-center justify-center flex-col h-dvh">
+                <span class="text-xl font-bold lg:text-2xl mb-3 max-w-sm block capitalize" id="file_title"></span>
+                <div>
+                    <div class="w-[45rem] rounded-lg border border-gray-200 dark:border-gray-800">
+                        <div class="flex flex-col h-[30rem]">
+                            <div class="flex-1 p-4">
+                                <div class="flex flex-col space-y-2 overflow-auto h-[21rem] w-full"
+                                    id="messages_container">
+
+                                </div>
+                            </div>
+                            <div class="p-4 border-t">
+                                <div class="flex items-center space-x-2">
+                                    <div class="flex-1">
+                                        <textarea id="message"
+                                            class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
+                                            placeholder="Type a message..."></textarea>
+                                    </div>
+                                    <button onclick="sendMessage(this)"
+                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="mr-2 -translate-y-[0.5px]">
+                                            <path d="m22 2-7 20-4-9-9-4Z"></path>
+                                            <path d="M22 2 11 13"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <span id="status_error" class="text-red-500 text-sm my-4 font-medium block text-center"></span>
+            <span id="status_success" class="text-primary text-sm my-4 font-medium block text-center"></span>
         </div>
     </div>
 </body>

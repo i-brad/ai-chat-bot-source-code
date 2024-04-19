@@ -1,17 +1,27 @@
 const messages = [];
+let sourceId = null;
+let uploadedFile = null;
+const uploadFileUI = document.getElementById("upload_file_ui");
+const chatUI = document.getElementById("chat_ui");
+const successElement = document.getElementById("status_success");
+const errorElement = document.getElementById("status_error");
+const fileInput = document.getElementById("file");
+const userMessagesContainer = document.getElementById("messages_container");
+const messageInput = document.getElementById("message");
+const uploadBtn = document.getElementById("upload_btn");
+const fileTitle = document.getElementById("file_title");
 
 function uploadFile() {
-  const fileInput = document.getElementById("file");
   const file = fileInput.files[0];
 
   if (!file) {
-    document.getElementById("status_error").innerHTML =
-      "Error: Please select a file.";
+    errorElement.innerText = "Error: Please select a file.";
     return;
   }
 
-  document.getElementById("status_error").innerHTML = "";
-  document.getElementById("status_success").innerHTML = "Uploading...";
+  uploadBtn.innerText = "Uploading";
+  uploadBtn.disabled = true;
+  errorElement.innerText = "";
 
   const formData = new FormData();
 
@@ -21,25 +31,27 @@ function uploadFile() {
     method: "POST",
     body: formData,
     headers: {
-      "x-api-key": "sec_tkG6I7hOvNmfwQdP28Ru36huO72gCt8y",
+      "x-api-key": "", //API key from chatpdf
     },
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-      document.getElementById("status_success").innerHTML =
-        "Uploaded Successfully";
-      window.location.href = `./chat.html?sourceId=${data.sourceId}`;
+      sourceId = data.sourceId;
+      uploadedFile = file;
+      if (data?.sourceId) {
+        fileTitle.innerText = `File: ${file?.name}`;
+        uploadFileUI.classList.add("hidden");
+        chatUI.classList.remove("hidden");
+        chatUI.classList.add("flex");
+      }
     })
     .catch((error) => {
       console.error("Error:", error);
-      document.getElementById("status_error").innerHTML =
-        "Error uploading file.";
+      errorElement.innerText = "Error uploading file.";
     });
 }
 
 function appendText(text) {
-  const userMessagesContainer = document.getElementById("messages_container");
   const div = document.createElement("div");
   div.className = "rounded-xl p-2 bg-gray-100 text-sm h-fit w-fit leading-5";
   div.innerHTML = text;
@@ -47,36 +59,21 @@ function appendText(text) {
 }
 
 function sendMessage(event) {
-  const searchParams = new URLSearchParams(window.location.search);
-  const sourceId = searchParams.get("sourceId");
-  const messageInput = document.getElementById("message");
   const text = messageInput.value;
 
   if (!sourceId) {
-    document.getElementById("status_error").innerHTML =
+    errorElement.innerText =
       "Error: Couldn't find source. Please try again from the home page";
     return;
   }
 
   if (!text) {
-    document.getElementById("status_error").innerHTML =
-      "Error: Please type a message to send.";
+    errorElement.innerText = "Error: Please type a message to send.";
     return;
   }
 
   event.disabled = true;
-  document.getElementById("status_error").innerHTML = "";
-  document.getElementById("status_success").innerHTML = "Sending...";
-
-  //   {
-  //     "sourceId": "src_xxxxxx",
-  //     "messages": [
-  //       {
-  //         "role": "user",
-  //         "content": "how much is the world?"
-  //       }
-  //     ]
-  //   }
+  errorElement.innerText = "";
 
   appendText(text);
   messageInput.value = "";
@@ -106,14 +103,12 @@ function makeMessageAPIRequest(sourceId, message, event) {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-      document.getElementById("status_success").innerHTML = "";
+      // console.log(data);
       appendText(data?.content || "");
     })
     .catch((error) => {
       console.error("Error:", error);
-      document.getElementById("status_error").innerHTML =
-        "Error: Failed to get a response.";
+      errorElement.innerHTML = "Error: Failed to get a response.";
     })
     .finally(() => (event.disabled = false));
 }

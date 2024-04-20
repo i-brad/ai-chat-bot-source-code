@@ -9,6 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            prefix: 'tw-',
             theme: {
                 extend: {
                     colors: {
@@ -27,79 +28,87 @@
     </script>
 </head>
 
-<body class="p-4">
-    <a href="/"
-        class="block py-2 px-3 bg-primary text-primary-foreground mb-8 w-fit rounded-md text-sm font-medium">H</a>
-    <div class="grid place-items-center h-dvh">
+<body>
+
+    <div class="tw-grid tw-place-items-center tw-w-full tw-p-4 tw-h-dvh">
         <!--
 // v0 by Vercel.
 // https://v0.dev/t/Cp7OkohwaKW
 -->
-        <div>
+        <div class="tw-w-full">
             <div id="upload_file_ui">
-                <h3 class="text-xl font-bold lg:text-2xl max-w-sm">Chat With Your PDF. Get Summary and more</h3>
-                <p class="text-sm mt-4 max-w-md">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
+                <h3 class="tw-text-xl tw-font-bold lg:tw-text-2xl tw-max-w-sm">Chat With Your PDF. Get Summary and
+                    more
+                </h3>
+                <p class="tw-text-sm tw-mt-4 tw-max-w-md">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                    Debitis,
                     repellendus
                     tempora nisi accusantium magni rerum harum explicabo! Ea, perspiciatis fugit.</p>
-                <div class="rounded-lg border mt-4 bg-card text-card-foreground shadow-sm w-full max-w-md"
+                <div class="tw-rounded-lg tw-border tw-mt-4 tw-bg-card tw-text-card-foreground tw-shadow-sm tw-w-full tw-max-w-md"
                     data-v0-t="card">
-                    <div class="flex flex-col space-y-1.5 p-4">
-                        <h3 class="text-2xl font-semibold whitespace-nowrap leading-none tracking-tight">Upload a file
+                    <div class="tw-flex tw-flex-col tw-space-y-1.5 tw-p-4">
+                        <h3 class="tw-text-2xl tw-font-semibold tw-whitespace-nowrap tw-leading-none tw-tracking-tight">
+                            Upload a file
                         </h3>
-                        <p class="text-sm text-muted-foreground">File should be in .pdf format</p>
+                        <p class="tw-text-sm tw-text-muted-foreground">File should be in .pdf format</p>
                     </div>
-                    <div class="p-4">
-                        <div class="flex items-center space-x-2">
+                    <div class="tw-p-4">
+                        <div class="tw-flex tw-items-center tw-space-x-2">
                             <label
-                                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                class="tw-text-sm tw-font-medium tw-leading-none peer-disabled:tw-cursor-not-allowed peer-disabled:tw-opacity-70"
                                 for="file">
                                 File
                             </label>
                             <input
-                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                class="tw-flex tw-h-10 tw-w-full tw-rounded-md tw-border tw-border-input tw-bg-background tw-px-3 tw-py-2 tw-text-sm tw-ring-offset-background file:tw-border-0 file:tw-bg-transparent file:tw-text-sm file:tw-font-medium placeholder:tw-text-muted-foreground focus-visible:tw-outline-none focus-visible:tw-ring-2 focus-visible:tw-ring-ring focus-visible:tw-ring-offset-2 disabled:tw-cursor-not-allowed disabled:tw-opacity-50"
                                 id="file" accept=".pdf" type="file" required />
                         </div>
                         <button onclick="uploadFile()" id="upload_btn"
-                            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 mt-4">
+                            class="tw-inline-flex tw-items-center tw-justify-center tw-whitespace-nowrap tw-rounded-md tw-text-sm tw-font-medium tw-ring-offset-background tw-transition-colors focus-visible:tw-outline-none focus-visible:tw-ring-2 focus-visible:tw-ring-ring focus-visible:tw-ring-offset-2 disabled:tw-pointer-events-none disabled:tw-opacity-50 tw-bg-primary tw-text-primary-foreground hover:tw-bg-primary/90 tw-h-10 tw-px-4 tw-py-2 tw-mt-4">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="mr-2 h-4 w-4">
+                                stroke-linejoin="round" class="tw-mr-2 tw-h-4 tw-w-4">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                 <polyline points="17 8 12 3 7 8"></polyline>
                                 <line x1="12" x2="12" y1="3" y2="15"></line>
                             </svg>
-                            Upload
+                            <span>Upload</span>
                         </button>
                     </div>
                 </div>
             </div>
-            <div id="chat_ui" class="hidden items-center justify-center flex-col h-dvh">
-                <span class="text-xl font-bold lg:text-2xl mb-3 max-w-sm block capitalize" id="file_title"></span>
-                <div>
-                    <div class="w-[45rem] rounded-lg border border-gray-200 dark:border-gray-800">
-                        <div class="flex flex-col h-[30rem]">
-                            <div class="flex-1 p-4">
-                                <div class="flex flex-col space-y-2 overflow-auto h-[21rem] w-full"
-                                    id="messages_container">
+            <div id="chat_ui"
+                class="tw-hidden tw-px-4 tw-items-center tw-justify-center tw-w-full tw-flex-col tw-h-dvh">
+                <span class="tw-text-xl tw-font-bold lg:tw-text-2xl tw-mb-3 tw-max-w-sm tw-block tw-capitalize"
+                    id="file_title"></span>
+                <div class="tw-w-full">
+                    <div
+                        class="tw-w-full lg:tw-w-[45rem] tw-rounded-lg tw-border tw-border-gray-200 dark:tw-border-gray-800">
+                        <div class="tw-flex tw-flex-col tw-h-[30rem]">
 
-                                </div>
+                            <div class="tw-flex tw-flex-col tw-flex-1 tw-p-4 tw-space-y-4 tw-overflow-auto tw-h-[21rem] tw-w-full"
+                                id="messages_container">
+
                             </div>
-                            <div class="p-4 border-t">
-                                <div class="flex items-center space-x-2">
-                                    <div class="flex-1">
+
+                            <div class="tw-p-4 tw-border-t">
+                                <div class="tw-flex tw-items-center tw-space-x-2">
+                                    <div class="tw-flex-1">
                                         <textarea id="message"
-                                            class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
+                                            class="tw-flex tw-min-h-[80px] tw-w-full tw-rounded-md tw-border tw-border-input tw-bg-background tw-px-3 tw-py-2 tw-text-sm tw-ring-offset-background placeholder:tw-text-muted-foreground focus-visible:tw-outline-none focus-visible:tw-ring-2 focus-visible:tw-ring-ring focus-visible:tw-ring-offset-2 disabled:tw-cursor-not-allowed disabled:tw-opacity-50 tw-resize-none"
                                             placeholder="Type a message..."></textarea>
                                     </div>
-                                    <button onclick="sendMessage(this)"
-                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+                                    <button onclick="sendMessage(this)" id="message_btn"
+                                        class="tw-group tw-inline-flex tw-items-center tw-justify-center tw-whitespace-nowrap tw-rounded-md tw-text-sm tw-font-medium tw-ring-offset-background tw-transition-colors focus-visible:tw-outline-none focus-visible:tw-ring-2 focus-visible:tw-ring-ring focus-visible:tw-ring-offset-2 disabled:tw-pointer-events-none disabled:tw-opacity-50 tw-bg-primary tw-text-primary-foreground hover:tw-bg-primary/90 tw-h-10 tw-px-4 tw-py-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
-                                            class="mr-2 -translate-y-[0.5px]">
+                                            class="tw-mr-2 tw-translate-y-[-0.5px] group-disabled:tw-hidden">
                                             <path d="m22 2-7 20-4-9-9-4Z"></path>
                                             <path d="M22 2 11 13"></path>
                                         </svg>
+                                        <span
+                                            class="group-disabled:tw-block tw-hidden tw-w-4 tw-h-4 tw-rounded-full tw-border tw-border-white tw-border-r-transparent tw-animate-spin tw-duration-75"></span>
                                     </button>
                                 </div>
                             </div>
@@ -108,8 +117,10 @@
 
                 </div>
             </div>
-            <span id="status_error" class="text-red-500 text-sm my-4 font-medium block text-center"></span>
-            <span id="status_success" class="text-primary text-sm my-4 font-medium block text-center"></span>
+            <span id="status_error"
+                class="tw-text-red-500 tw-text-sm tw-my-4 tw-font-medium tw-block tw-text-center"></span>
+            <span id="status_success"
+                class="tw-text-primary tw-text-sm tw-my-4 tw-font-medium tw-block tw-text-center"></span>
         </div>
     </div>
 </body>

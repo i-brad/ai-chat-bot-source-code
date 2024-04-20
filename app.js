@@ -8,8 +8,17 @@ const errorElement = document.getElementById("status_error");
 const fileInput = document.getElementById("file");
 const userMessagesContainer = document.getElementById("messages_container");
 const messageInput = document.getElementById("message");
+const messageBtn = document.getElementById("message_btn");
 const uploadBtn = document.getElementById("upload_btn");
 const fileTitle = document.getElementById("file_title");
+
+// Add event listener for key press
+messageInput.addEventListener("keydown", function (event) {
+  if (event.code === "Enter") {
+    event.preventDefault(); // Prevent the default behavior of Enter in a textarea
+    sendMessage(); // Call your custom function
+  }
+});
 
 function uploadFile() {
   const file = fileInput.files[0];
@@ -19,7 +28,7 @@ function uploadFile() {
     return;
   }
 
-  uploadBtn.innerText = "Uploading";
+  uploadBtn.lastElementChild.innerText = "Uploading";
   uploadBtn.disabled = true;
   errorElement.innerText = "";
 
@@ -31,7 +40,7 @@ function uploadFile() {
     method: "POST",
     body: formData,
     headers: {
-      "x-api-key": "", //API key from chatpdf
+      "x-api-key": "sec_tkG6I7hOvNmfwQdP28Ru36huO72gCt8y", //API key from chatpdf
     },
   })
     .then((response) => response.json())
@@ -39,26 +48,36 @@ function uploadFile() {
       sourceId = data.sourceId;
       uploadedFile = file;
       if (data?.sourceId) {
-        fileTitle.innerText = `File: ${file?.name}`;
-        uploadFileUI.classList.add("hidden");
-        chatUI.classList.remove("hidden");
-        chatUI.classList.add("flex");
+        fileTitle.innerText = `File Uploaded: ${file?.name}`;
+        uploadFileUI.classList.add("tw-hidden");
+        chatUI.classList.remove("tw-hidden");
+        chatUI.classList.add("tw-flex");
       }
     })
     .catch((error) => {
       console.error("Error:", error);
       errorElement.innerText = "Error uploading file.";
+      uploadBtn.lastElementChild.innerText = "Uploading";
+      uploadBtn.disabled = false;
     });
 }
 
-function appendText(text) {
+function appendText(text, who = "user") {
   const div = document.createElement("div");
-  div.className = "rounded-xl p-2 bg-gray-100 text-sm h-fit w-fit leading-5";
-  div.innerHTML = text;
+  div.className = "tw-flex tw-flex-col tw-space-y-2 tw-h-auto";
+  div.innerHTML = `
+  <span class="tw-text-sm tw-font-medium">${
+    who === "user" ? "You" : "Unibot"
+  }</span>
+  <div class="tw-rounded-xl tw-p-2 tw-bg-gray-100 ${
+    who == "user" ? "" : "tw-mb-8"
+  } tw-text-sm tw-h-fit tw-w-fit tw-leading-5">${text}</div>
+  `;
   userMessagesContainer.appendChild(div);
+  userMessagesContainer.scrollTop = userMessagesContainer.scrollHeight;
 }
 
-function sendMessage(event) {
+function sendMessage() {
   const text = messageInput.value;
 
   if (!sourceId) {
@@ -72,16 +91,16 @@ function sendMessage(event) {
     return;
   }
 
-  event.disabled = true;
+  messageBtn.disabled = true;
   errorElement.innerText = "";
 
-  appendText(text);
+  appendText(text, "user");
   messageInput.value = "";
 
-  makeMessageAPIRequest(sourceId, text, event);
+  makeMessageAPIRequest(sourceId, text);
 }
 
-function makeMessageAPIRequest(sourceId, message, event) {
+function makeMessageAPIRequest(sourceId, message) {
   const data = {
     referenceSources: true,
     sourceId: sourceId,
@@ -97,18 +116,18 @@ function makeMessageAPIRequest(sourceId, message, event) {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
-      "x-api-key": "", //API key from chatpdf
+      "x-api-key": "sec_tkG6I7hOvNmfwQdP28Ru36huO72gCt8y", //API key from chatpdf
       "Content-Type": "application/json",
     },
   })
     .then((response) => response.json())
     .then((data) => {
       // console.log(data);
-      appendText(data?.content || "");
+      appendText(data?.content || "", "response");
     })
     .catch((error) => {
       console.error("Error:", error);
-      errorElement.innerHTML = "Error: Failed to get a response.";
+      errorElement.innerText = "Error: Failed to get a response.";
     })
-    .finally(() => (event.disabled = false));
+    .finally(() => (messageBtn.disabled = false));
 }
